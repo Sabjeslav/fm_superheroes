@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -8,12 +8,12 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable('superherose_to_superpowers', {
+    await queryInterface.createTable('superheroes_to_superpowers', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
       heroId: {
         field: 'hero_id',
@@ -21,10 +21,10 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'superheroes',
-          key: 'id'
+          key: 'id',
         },
         onDelete: 'cascade',
-        onUpdate: 'cascade'
+        onUpdate: 'cascade',
       },
       superpowerId: {
         field: 'superpower_id',
@@ -32,18 +32,15 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'superpowers',
-          key: 'id'
-        }
-      }
-    })
+          key: 'id',
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      },
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-  }
-}
+    await queryInterface.dropTable('superheroes_to_superpowers');
+  },
+};

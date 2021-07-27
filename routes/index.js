@@ -5,6 +5,6 @@ const powersRouter = require('./powers');
 const router = Router();
 
 router.use('/heroes', heroesRouter);
-router.use('/powers', powersRouter);
+// router.use('/powers', powersRouter);
 
 module.exports = router;
