@@ -1,5 +1,5 @@
-'use strict'
-const { Model } = require('sequelize')
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Superhero extends Model {
     /**
@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
+      Superhero.belongsToMany(models.superpowers, {
+        through: 'superheroes_to_superpowers',
+        foreignKey: 'heroId',
+      });
     }
   }
   Superhero.init(
@@ -16,27 +20,30 @@ module.exports = (sequelize, DataTypes) => {
       nickname: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       realName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+      },
+      imagePath: {
+        type: DataTypes.TEXT,
       },
       originDescription: {
         type: DataTypes.TEXT,
-        allowNull: false
+        allowNull: false,
       },
       catchPhrase: {
         type: DataTypes.TEXT,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     },
     {
       sequelize,
       modelName: 'Superhero',
       tableName: 'superheroes',
-      underscored: true
+      underscored: true,
     }
-  )
-  return Superhero
-}
+  );
+  return Superhero;
+};

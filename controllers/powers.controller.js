@@ -89,3 +89,4 @@ module.exports.getPowerById = async (req, res, next) => {
     next(err);
   }
 };
+

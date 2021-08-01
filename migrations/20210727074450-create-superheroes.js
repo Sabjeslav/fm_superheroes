@@ -23,6 +23,11 @@ module.exports = {
         allowNull: false,
         field: 'origin_description',
       },
+      imagePath: {
+        type: Sequelize.TEXT,
+        field: 'image_path',
+        defaultStatus: Sequelize.NULL,
+      },
       catchPhrase: {
         type: Sequelize.TEXT,
         allowNull: false,

@@ -87,3 +87,28 @@ module.exports.deleteHeroById = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.createImage = async (req, res, next) => {
+  try {
+    const {
+      file: { filename },
+      params: { id },
+    } = req;
+
+    const [rowsCount, [updatedSuperhero]] = await Superhero.update(
+      { imagePath: filename },
+      {
+        where: {
+          id,
+        },
+        returning: true,
+      }
+    );
+    if (rowsCount !== 1) {
+      return next(createError(404, 'Superhero not found'));
+    }
+    res.send(updatedSuperhero);
+  } catch (err) {
+    next(err);
+  }
+};

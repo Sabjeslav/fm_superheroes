@@ -1,4 +1,6 @@
 node_modules
-.*
+.vscode/
+.idea/
 !.gitignore
-/sequelize-meta.json
+sequelize-*.json
+/public
