@@ -25,6 +25,7 @@ heroesRouter.delete('/:id', heroesController.deleteHeroById);
 
 heroesRouter.get('/:id/powers', heroesController.getHeroPowers);
 heroesRouter.post('/:id/powers', heroesController.addPowerToHero);
+heroesRouter.delete('/:id/powers', heroesController.deleteHeroPower);
 
 heroesRouter.post(
   '/:id/image',
@@ -36,6 +37,6 @@ heroesRouter.delete(
   '/:id/image/:imageId',
   imageController.deleteHeroImageByImageId
 );
-heroesRouter.delete('/:id/image/', imageController.deleteAllHeroImages);
+heroesRouter.delete('/:id/image', imageController.deleteAllHeroImages);
 
 module.exports = heroesRouter;

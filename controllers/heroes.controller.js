@@ -128,3 +128,27 @@ module.exports.addPowerToHero = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.deleteHeroPower = async (req, res, next) => {
+  try {
+    const {
+      params: { id },
+      body: { powerId },
+    } = req;
+    const hero = await Superhero.findByPk(id);
+    const power = await Superpower.findByPk(powerId);
+    await hero.removeSuperpower(power);
+    const heroWithoutSuperPower = await Superhero.findAll({
+      where: { id },
+      include: [
+        {
+          model: Superpower,
+        },
+      ],
+    });
+
+    res.send(heroWithoutSuperPower);
+  } catch (err) {
+    next(err);
+  }
+};
