@@ -5,3 +5,4 @@ node_modules
 sequelize-*.json
 /public
 /.env
+sequelize-meta.json

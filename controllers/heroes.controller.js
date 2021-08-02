@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const { Superhero } = require('../models');
+const { Superhero, Superpower } = require('../models');
 
 module.exports.createHero = async (req, res, next) => {
   try {
@@ -17,10 +17,10 @@ module.exports.createHero = async (req, res, next) => {
 
 module.exports.getAllHeroes = async (req, res, next) => {
   try {
-    const {
-      count: rowsCount,
-      rows: heroes,
-    } = await Superhero.findAndCountAll();
+    const { pagination } = req;
+    const { count: rowsCount, rows: heroes } = await Superhero.findAndCountAll({
+      ...pagination,
+    });
     if (rowsCount === 0) {
       const err = createError(404, 'No heroes');
       return next(err);
@@ -88,26 +88,42 @@ module.exports.deleteHeroById = async (req, res, next) => {
   }
 };
 
-module.exports.createImage = async (req, res, next) => {
+module.exports.getHeroPowers = async (req, res, next) => {
   try {
     const {
-      file: { filename },
       params: { id },
     } = req;
-
-    const [rowsCount, [updatedSuperhero]] = await Superhero.update(
-      { imagePath: filename },
-      {
-        where: {
-          id,
-        },
-        returning: true,
-      }
-    );
-    if (rowsCount !== 1) {
-      return next(createError(404, 'Superhero not found'));
+    const hero = await Superhero.findByPk(id);
+    const powers = await hero.getSuperpowers();
+    if (!powers) {
+      return next(createError(404, 'No superpowers found'));
     }
-    res.send(updatedSuperhero);
+    res.send({ powers });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports.addPowerToHero = async (req, res, next) => {
+  try {
+    const {
+      params: { id },
+      body: { powerId },
+    } = req;
+    const hero = await Superhero.findByPk(id);
+    const power = await Superpower.findByPk(powerId);
+    await hero.addSuperpower(power);
+
+    const heroWithSuperPower = await Superhero.findAll({
+      where: { id },
+      include: [
+        {
+          model: Superpower,
+        },
+      ],
+    });
+
+    res.send(heroWithSuperPower);
   } catch (err) {
     next(err);
   }

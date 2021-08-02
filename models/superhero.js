@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
-      Superhero.belongsToMany(models.superpowers, {
+      Superhero.belongsToMany(models.Superpower, {
         through: 'superheroes_to_superpowers',
         foreignKey: 'heroId',
       });
@@ -25,9 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       realName: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      imagePath: {
-        type: DataTypes.TEXT,
       },
       originDescription: {
         type: DataTypes.TEXT,

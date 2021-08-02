@@ -1,12 +1,12 @@
 const createError = require('http-errors');
-const { superpowers } = require('../models');
+const { Superpower } = require('../models');
 
 module.exports.getAllPowers = async (req, res, next) => {
   try {
     const {
       count: powersAmount,
       rows: powers,
-    } = await superpowers.findAndCountAll();
+    } = await Superpower.findAndCountAll();
     if (powersAmount === 0) {
       const err = createError(404, 'No powers found');
       return next(err);
@@ -22,7 +22,7 @@ module.exports.getAllPowers = async (req, res, next) => {
 module.exports.createPower = async (req, res, next) => {
   try {
     const { body } = req;
-    const createdPower = await superpowers.create(body);
+    const createdPower = await Superpower.create(body);
     res.status(201).send({ data: createdPower });
   } catch (err) {
     next(err);
@@ -34,7 +34,7 @@ module.exports.deletePower = async (req, res, next) => {
     const {
       params: { id },
     } = req;
-    const deletedTask = await superpowers.destroy({
+    const deletedTask = await Superpower.destroy({
       where: {
         id,
       },
@@ -56,7 +56,7 @@ module.exports.updatePower = async (req, res, next) => {
       params: { id },
       body,
     } = req;
-    const [rowsCount, updatedPower] = await superpowers.update(body, {
+    const [rowsCount, updatedPower] = await Superpower.update(body, {
       where: { id },
       returning: true,
     });
@@ -77,7 +77,7 @@ module.exports.getPowerById = async (req, res, next) => {
     const {
       params: { id },
     } = req;
-    const power = await superpowers.findByPk(id);
+    const power = await Superpower.findByPk(id);
     if (!power) {
       const err = createError(404, 'Power not found');
       return next(err);

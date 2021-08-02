@@ -1,7 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class superpowers extends Model {
+  class Superpower extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
-      superpowers.belongsToMany(models.Superhero, {
+      Superpower.belongsToMany(models.Superhero, {
         through: 'superheroes_to_superpowers',
         foreignKey: 'superpowerId',
       });
     }
   }
-  superpowers.init(
+  Superpower.init(
     {
       name: {
         type: DataTypes.STRING,
@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'superpowers',
+      modelName: 'Superpower',
       tableName: 'superpowers',
       underscored: true,
     }
   );
-  return superpowers;
+  return Superpower;
 };
